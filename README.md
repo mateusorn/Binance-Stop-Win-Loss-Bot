@@ -19,3 +19,5 @@
 
 # Crypto-Alert
  With this bot you will have at your disposal a bot that will set up an automatic stop win and stop loss whenever you buy any cryptocurrency on your Binance account.
+
+WORK IN PROGRESS
