@@ -12,7 +12,7 @@ from numpy import empty
 from colorama import *
 from termcolor import *
 
-client = Client("brp2Txdw2Hspn1I8JGzJaIWgOfwfqX6Ad89Om4W5X0IxyBbgfDH6T5Af8vCg1lGE", "ZGybd3qYnHRcvmdQlJbzierxeZuK7TCx7C4DoEi1CbGZIV8SOlTWHlSwkDTvlX2z", {"verify": True, "timeout": 20})
+client = Client("KEY", "PRIVATE", {"verify": True, "timeout": 20})
 
 stop_loss = 0.9962 #-0,38% Stop Loss
 stop_gain = 1.0225 #2,25% Stop Gain
