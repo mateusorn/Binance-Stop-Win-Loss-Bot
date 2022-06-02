@@ -21,9 +21,10 @@
  If you are reading needs I want to make you clear that It's my first "big" project with Python and I still learning a lot, and since we are talking about money, I'm not responsible for your money, this bot can help you a lot, but it can also fail and end up not setting up the stop loss on your trades and you can end up losing money! be aware of it!
  
 # Requirements
-> pip install python-binance
-> pip install binance
-> pip install colorama
-> pip install termcolor
-
+```
+pip install python-binance
+pip install binance
+pip install colorama
+pip install termcolor
+```
 # How to use
