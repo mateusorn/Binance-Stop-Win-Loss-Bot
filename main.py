@@ -42,10 +42,10 @@ while (mode < 10):
             mode = 0
             break
         try:
-            with open("blacklisted-ids.txt", "a") as myfile: #INSERE O ID DA TRANSAÇÃO SELL SIDE NA BLACKLIST
+            with open("blacklisted-ids.txt", "a") as myfile: #BLACKLIST
                 myfile.write("\n" + str(orderIdOpenOrder))
         except FileNotFoundError:
-            with open("blacklisted-ids.txt", "w") as myfile: #INSERE O ID DA TRANSAÇÃO SELL SIDE NA BLACKLIST
+            with open("blacklisted-ids.txt", "w") as myfile: #BLACKLIST
                 myfile.write("\n" + str(orderIdOpenOrder))
         if bool(order) == True:
             orderIdOpenOrder = order[0]["orderId"]
@@ -95,12 +95,12 @@ while (mode < 10):
                 quantityOpenOrder = order[0]["origQty"]
                 print(Fore.RED + "[+]" + Fore.GREEN + f" We found a transaction! Coin: {symbolOpenOrder} | Status: {statusOpenOrder} | Order ID: {orderIdOpenOrder} | Price: {priceOpenOrder}" + Fore.RESET)
                 print(Fore.RED + "[+]" + Fore.RED + " Unhapply isn't in there a lot that this bot can do, since It isn't a Buy Order, but I'm going to register this transaction and it will be ignored next time...")
-                with open("blacklisted-ids.txt", "a") as myfile: #INSERE O ID DA TRANSAÇÃO SELL SIDE NA BLACKLIST
+                with open("blacklisted-ids.txt", "a") as myfile: #BLACKLIST THE TRANSACTIONS, NEXT TIME THE CODE RUNS, THIS TRANSACTION IS GOING TO BE IGNORED
                     myfile.write("\n" + orderIdOpenOrder)
-                mode = 0 #RETORNA PARA O COMEÇO
+                mode = 0 #STARTS EVERYTHING AGAIN
                 sleep(10)
                 
-        elif len(order) > 1: #SE EXISTIR MAIS DE 1 UMA TRANSAÇÃO ABERTA, FAÇA:
+        elif len(order) > 1: #IF IS IN THERE MORE THAN ONE TRANSACTION, DO
             order = list(client.get_open_orders())
             os.system("cls")
             print(Fore.RED + "[+]" + Fore.GREEN + f" {len(order)} open orders, filtering by [Limit Order - Buy Side]..." + Fore.RESET)
@@ -116,13 +116,15 @@ while (mode < 10):
                 typeOpenOrder = order[repeater]["type"]
                 quantityOpenOrder = order[repeater]["origQty"]
                 if sideOpenOrder == "BUY":
+                    sleep(0.5)
                     print(Fore.RED + f"[{repeater+1}]" + Fore.GREEN + f" Coin/Amount: {round(float(quantityOpenOrder), 1)} {symbolOpenOrder} | Status: {statusOpenOrder} | Order ID: {orderIdOpenOrder} | Market Price: {priceOpenOrder} | Side: {sideOpenOrder} | USD Amount: {round(float(quantityOpenOrder) * float(priceOpenOrder), 2)}$" + Fore.RESET)
                 else:
+                    sleep(0.5)
                     print(Fore.RED + f"[{repeater+1}]" + Fore.RED + f" Coin/Amount: {round(float(quantityOpenOrder), 1)} {symbolOpenOrder} | Status: {statusOpenOrder} | Order ID: {orderIdOpenOrder} | Market Price: {priceOpenOrder} | Side: {sideOpenOrder} | USD Amount: {round(float(quantityOpenOrder) * float(priceOpenOrder), 2)}$" + Fore.RESET)
                 repeater+= 1
             print("\n") #New line to look cool
             set = 0
-            while len(order) != set: #FAZ PULAR DE NÚMERO EM NÚMERO DE TRANSAÇÕES E SÓ IMPRIMI AS BUYSIDE
+            while len(order) != set: #Jump transaction buy transaction and check if the transaction is buy or sell side, if it is a sell side one, the order is going to be blacklisted and ignored next time the code look for new transactions
                 sideOpenOrder = order[set]["side"] 
                 orderIdOpenOrder = order[set]["orderId"]
                 statusOpenOrder = order[set]["status"]
@@ -133,7 +135,7 @@ while (mode < 10):
                 with open('blacklisted-ids.txt') as f:
                     lines = f.readlines()
                 especialorderIdOpenOrder = str(orderIdOpenOrder) + "\n"
-                if especialorderIdOpenOrder in lines:
+                if especialorderIdOpenOrder in lines: #Check if the transaction is arealdy blacklisted
                     set += 1
                     print(Fore.RED + "[+]" + Fore.RED + f" Transaction {orderIdOpenOrder} already blacklisted..." + Fore.RESET)
                     sleep(2)
@@ -146,9 +148,9 @@ while (mode < 10):
                 elif sideOpenOrder == "BUY":
                     print(Fore.RED + "[+]" + Fore.GREEN + f" We found a buy transaction! Coin: {symbolOpenOrder} | Status: {statusOpenOrder} | Order ID: {orderIdOpenOrder} | Price: {priceOpenOrder}" + Fore.RESET)
                     print(Fore.RED + "[+]" + Fore.BLUE + f" Starting bot..." + Fore.RESET)
-                    with open(f"buy_order.txt", "w") as buytransaction: #INSE
+                    with open(f"buy_order.txt", "w") as buytransaction:
                         buytransaction.write(str(orderIdOpenOrder) + "\n" + symbolOpenOrder)
-                    with open("blacklisted-ids.txt", "a") as myfile: #INSERE O ID DA TRANSAÇÃO SELL SIDE NA BLACKLIST
+                    with open("blacklisted-ids.txt", "a") as myfile: #BLACKLIST
                         myfile.write("\n" + str(orderIdOpenOrder))
 
                     path_run = path.replace("main.py", "")
@@ -158,7 +160,7 @@ while (mode < 10):
                     break
                     #OBSERVATION: I made the code break every time it find and register a buy transaction cause of a wierd bug that was making the last buy transaction be executed twice.
                 else:
-                 with open("blacklisted-ids.txt", "a") as myfile: #INSERE O ID DA TRANSAÇÃO SELL SIDE NA BLACKLIST
+                 with open("blacklisted-ids.txt", "a") as myfile: #BLACKLIST
                     myfile.write("\n" + str(orderIdOpenOrder).replace("\n", ""))
                     print(Fore.RED + "[+]" + Fore.RED + f" Transaction {orderIdOpenOrder} is now on blacklist..." + Fore.RESET)
                     sleep(2)
