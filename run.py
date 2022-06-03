@@ -36,14 +36,13 @@ except FileNotFoundError:
 
 symbol = lines[1]
 orderid = lines[0]
-order = list(client.get_all_orders(symbol=str(symbol), orderId=int(orderid))) #Requests the data of the 
+order = list(client.get_all_orders(symbol=str(symbol), orderId=int(orderid)))
 sideOpenOrder = order[0]["side"] 
 statusOpenOrder = order[0]["status"]
 priceOpenOrder = order[0]["price"]
 typeOpenOrder = order[0]["type"]
 quantityOpenOrder = order[0]["origQty"]
 f.close()
-
 
 if sideOpenOrder == "BUY": #Just to make sure that the order is really BUY side
     while statusOpenOrder == "NEW":
@@ -74,12 +73,6 @@ if sideOpenOrder == "BUY": #Just to make sure that the order is really BUY side
         stopLossprice = round(float(priceOpenOrder) * stoploss, decimals)
         stopLimitprice = round(stopLossprice * float(0.9), decimals)
         stopGainprice = round(float(priceOpenOrder) * stopgain, decimals)
-        print("SYMBOL " + str(symbol))
-        print("Stop Gain " + str(stopGainprice))
-        print("Stop Loss " + str(stopLossprice))
-        print("Stop Loss Limit" + str(stopLimitprice))
-        print("Qtd " + str(round(float(quantityOpenOrder),2)))
-        print("Qtd2 " + str(quantity))
 
         create = client.create_oco_order(
         symbol=symbol,
@@ -89,8 +82,9 @@ if sideOpenOrder == "BUY": #Just to make sure that the order is really BUY side
         stopPrice=str(stopLossprice),
         stopLimitPrice=str(stopLossprice),
         price=str(stopGainprice))
-        print("OCO ORDER CREATED")
-        sleep(60)
+        print(Fore.RED + "[+]" + Fore.RED + " OCO ORDER CREATED, HERE COME SOME INFORMATIONS:")
+        print(Fore.RED + "[+]" + Fore.RED + f" YOU'RE SELLING THE COIN {filtered_symbol}, YOU BOUGHT AT {priceOpenOrder}$, NOW THE COIN IS GOING TO BE SELLED AT {stopGainPrice}$ - If it reachs the stop gain - OR SELLED AT {stopLossPrice} - If it break on StopLoss!")
+        sleep(100000)
     else:
         exit()
 else:
