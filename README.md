@@ -28,3 +28,6 @@ pip install colorama
 pip install termcolor
 ```
 # How to use
+>Soon I'll upload a YouTube video about my about, a quick tutorial of how to create your Binance API and how to configure.
+ First of all, open both files with a text editor and change the slots "private" and "public" with your API keys (Remember, It's impossible to make withdraws or stole your cryptos with this keys), next go to the file run.py and configure your Stop Loss and Stop Gain numbers, make sure to follow the instrutions inside the comment!
+ Remember, this bot isn't made for instant transactions, if you create a order and it gett instantly filled, the bot may not capture the order and a stop loss isn't going to be created.
