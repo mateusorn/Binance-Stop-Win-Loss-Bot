@@ -11,12 +11,17 @@ from colorama import *
 from termcolor import *
 from pathlib import Path
 
-public_key = "key"
+#Hi, I recorded a video about this bot, here is the link:
+#Remember, when you are working with cryptocurrencies you need to stay aware all the time, the market can change insanely, this bot can help you
+#but It don't mean that you can forget about your money, if you lose your money, It's not my problem.
+#we have a lot of sleep timer on this code cause binance sucks, if you make a lot of requests in a short amount of time, they'are you going to stop your application, then i set up this timers, it make the code works fine watching 3 orders at the same time
+#Advice: This bot isn't made to make super fast transactions, the bot just start watching the coin when a new console open showing the informations about the coin that you wanna buy, If you create a order and it get instantly filled, example: "If you wanna to buy a crypto for 12$ and it costs 12.01$, the order probably is going to get filled instatly and the chances of the bot capture the transaction is super low, so, create limit open order to get filled inside a time of 1 minute or more.
+public_key = "key" #on the video I explain you how to create those keys.
 private_key = "key"
-client = Client(public_key, private_key, {"verify": True, "timeout": 20})
+client = Client(public_key, private_key, {"verify": True, "timeout": 20}) #Request from Binance informations about your account
 
-order = list(client.get_open_orders())
-path = os.path.abspath(__file__)
+order = list(client.get_open_orders()) #Get the list of open orders on your account
+path = os.path.abspath(__file__) #Save the path where this code is running for later usage
 
 mode = 0
 while (mode < 10):
@@ -28,8 +33,8 @@ while (mode < 10):
         sleep(1)
         print("Looking for Limit Orders on Buy side...", end="\r")
         sleep(1)
-        order = list(client.get_open_orders())
-        if bool(order) == True:
+        order = list(client.get_open_orders()) #Get the list of open orders on your account
+        if bool(order) == True: #Check if is in there any open order, asking if the list "order' is empty or not
             orderIdOpenOrder = order[0]["orderId"]
         else:
             print(Fore.RED + "[+]" + Fore.RED + " You don't have any open orders at the moment")
@@ -49,7 +54,7 @@ while (mode < 10):
             mode = 1
 
     if mode == 1: 
-        if len(order) == 1:  #SE EXISTIR APENAS UMA TRANSAÇÃO EM ABERTO                      
+        if len(order) == 1:  #asks if the amount of open orders is 1.                    
             sideOpenOrder = order[0]["side"] 
             orderIdOpenOrder = order[0]["orderId"]
             statusOpenOrder = order[0]["status"]
@@ -58,9 +63,9 @@ while (mode < 10):
             priceOpenOrder = order[0]["price"]
             typeOpenOrder = order[0]["type"]
             quantityOpenOrder = order[0]["origQty"]
-            print(Fore.RED + f"[+]" + Fore.GREEN + f" Coin/Amount: {round(float(quantityOpenOrder), 1)} {symbolOpenOrder} | Status: {statusOpenOrder} | Order ID: {orderIdOpenOrder} | Market Price: {priceOpenOrder} | Side: {sideOpenOrder} | USD Amount: {round(float(quantityOpenOrder) * float(priceOpenOrder), 2)}$" + Fore.RESET)
+            print(Fore.RED + f"[+]" + Fore.GREEN + f" Coin/Amount: {round(float(quantityOpenOrder), 1)} {symbolOpenOrder} | Status: {statusOpenOrder} | Order ID: {orderIdOpenOrder} | Market Price: {priceOpenOrder} | Side: {sideOpenOrder} | USD Amount: {round(float(quantityOpenOrder) * float(priceOpenOrder), 2)}$" + Fore.RESET) #print informations about the order, if it existis
             
-            if sideOpenOrder == "BUY":
+            if sideOpenOrder == "BUY": #check if the order is on buy side
                 with open('blacklisted-ids.txt') as f:
                     lines = f.readlines()
                 especialorderIdOpenOrder = str(orderIdOpenOrder) + "\n"
@@ -69,9 +74,9 @@ while (mode < 10):
                     mode = 0
                 else:
                     print(Fore.RED + "[+]" + Fore.BLUE + f" Starting bot..." + Fore.RESET)
-                    with open(f"buy_order.txt", "w") as buytransaction: #INSE
+                    with open(f"buy_order.txt", "w") as buytransaction: #register in the transaction in the buy list, this number is going to be used later by the run.py
                         buytransaction.write(str(orderIdOpenOrder) + "\n" + symbolOpenOrderUSD)
-                    with open("blacklisted-ids.txt", "a") as myfile: #INSERE O ID DA TRANSAÇÃO SELL SIDE NA BLACKLIST
+                    with open("blacklisted-ids.txt", "a") as myfile:  #Insert the founded transaction to the blacklist, it exists to don't make the same transaction get captured twice
                         myfile.write("\n" + str(orderIdOpenOrder))
                     path_run = path.replace("main.py", "")
                     os.system(f'cd "{path_run}" && start run.py')
@@ -133,13 +138,14 @@ while (mode < 10):
                     print(Fore.RED + "[+]" + Fore.RED + f" Transaction {orderIdOpenOrder} already blacklisted..." + Fore.RESET)
                     sleep(2)
 
-                elif sideOpenOrder == "BUY":
-                    print(Fore.RED + "[+]" + Fore.GREEN + f" We found a buy transaction! Coin: {symbolOpenOrder} | Status: {statusOpenOrder} | Order ID: {orderIdOpenOrder} | Price: {priceOpenOrder}" + Fore.RESET)
-                    print(Fore.RED + "[+]" + Fore.BLUE + f" Starting bot..." + Fore.RESET)
+                    #IF THE ORDER IS A VALID BUY SIDE ONE:
                     #REGISTER ID OF THE TRANSACTION
                     #OPEN THE BOT.PY
                     #ADD THIS TRANSACTION ON BLACKLIST
                     #CHECK IF THIS SECTOR IS BLOCKING BLACKLISTED TRANSACTIONS EVEN IF THEY ARE BUY SIDE
+                elif sideOpenOrder == "BUY":
+                    print(Fore.RED + "[+]" + Fore.GREEN + f" We found a buy transaction! Coin: {symbolOpenOrder} | Status: {statusOpenOrder} | Order ID: {orderIdOpenOrder} | Price: {priceOpenOrder}" + Fore.RESET)
+                    print(Fore.RED + "[+]" + Fore.BLUE + f" Starting bot..." + Fore.RESET)
                     with open(f"buy_order.txt", "w") as buytransaction: #INSE
                         buytransaction.write(str(orderIdOpenOrder) + "\n" + symbolOpenOrder)
                     with open("blacklisted-ids.txt", "a") as myfile: #INSERE O ID DA TRANSAÇÃO SELL SIDE NA BLACKLIST
@@ -150,7 +156,7 @@ while (mode < 10):
                     sleep(5)
                     mode = 0
                     break
-                    #OBSERVATION: I made the code break every time it find and register a buy transaction cause of a wierd bug that was making the last buy transaction be executed twice
+                    #OBSERVATION: I made the code break every time it find and register a buy transaction cause of a wierd bug that was making the last buy transaction be executed twice.
                 else:
                  with open("blacklisted-ids.txt", "a") as myfile: #INSERE O ID DA TRANSAÇÃO SELL SIDE NA BLACKLIST
                     myfile.write("\n" + str(orderIdOpenOrder).replace("\n", ""))
