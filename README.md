@@ -29,5 +29,16 @@ pip install colorama
 # How to use
 >[How to create your API on Binance (YouTube Video)](https://youtu.be/JqqcqxXTR40)
 
- First of all, open both files with a text editor and change the slots "private" and "public" with your API keys (Remember, It's impossible to make withdraws or stole your cryptos with this keys), next go to the file run.py and configure your Stop Loss and Stop Gain numbers, make sure to follow the instrutions inside the comment!
+ First of all, open your config.json and fil according to description:
+ ```
+{
+  "public_api": "6xqLf73fLLuLAwBo95QhqMqan195e0gUr1y6sKhabznsAHELmShz7pwiUDskxAIR",  #Don't know how to create your API?
+  "private_api": "hjplYxrnyuQ7ya2Jzd3NOPpjhSpwciPYqfwTR53WOqEsai5ZGZmAxWHJfinPqiC",  #Check the video above!
+  "stop_gain": 1.05, 
+  "stop_loss": 0.98
+}
+# For some people it's hard to understand, so I'll let some examples here and hope you get it! 
+# [0.90 - 10% LOSS] [1.10 - 10% GAIN] [1.04 - 4% GAIN] [0.98 - 2% LOSS]
+# 'stop_gain' needs to be more then 1.01 and 'stop_loss' needs to be smaller than 0.99
+```
  Remember, this bot isn't made for instant transactions, if you create a order and it gett instantly filled, the bot may not capture the order and a stop loss isn't going to be created.
