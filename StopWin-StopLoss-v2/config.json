@@ -1,0 +1,6 @@
+{
+  "public_api": "KEY",
+  "private_api": "SECRET KEY",
+  "stop_gain": 1.05,
+  "stop_loss": 0.98
+}
