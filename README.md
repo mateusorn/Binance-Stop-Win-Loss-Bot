@@ -25,7 +25,6 @@
 pip install python-binance
 pip install binance
 pip install colorama
-pip install termcolor
 ```
 # How to use
 >Soon I'll upload a YouTube video about my about, a quick tutorial of how to create your Binance API and how to configure.
