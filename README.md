@@ -29,7 +29,7 @@ pip install colorama
 # How to use
 >[How to create your API on Binance (YouTube Video)](https://youtu.be/JqqcqxXTR40)
 
- First of all, open your config.json and fil according to description:
+ First of all, open your config.json and fill according to description:
  ```
 {
   "public_api": "6xqLf73fLLuLAwBo95QhqMqan195e0gUr1y6sKhabznsAHELmShz7pwiUDskxAIR",  #Don't know how to create your API?
